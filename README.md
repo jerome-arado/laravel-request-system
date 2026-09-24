@@ -6,9 +6,9 @@ A Laravel-based web application developed for DevOps Laboratory 1 that demonstra
 
 ## Student Information
 
-- **Name:** [Arado, Jerome]
-- **Name:** [Derit, Hugh]
-- **Course, Year, and Section:** [BSIT – 4 – 3]
+- **Name:** Arado, Jerome
+- **Name:** Derit, Hugh
+- **Course, Year, and Section: ** BSIT 4-3
 
 ---
 
