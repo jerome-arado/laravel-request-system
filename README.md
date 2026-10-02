@@ -109,3 +109,42 @@ http://127.0.0.1:8000
 ## GitHub Repository Link
 
 https://github.com/jerome-arado/laravel-request-system
+
+## Request Table Fields
+
+| Field | Type | Constraint |
+|---|---|---|
+| id | BIGINT UNSIGNED | Primary key, auto-increment |
+| requester_name | VARCHAR(100) | Required |
+| requester_email | VARCHAR(255) | Required |
+| item_name | VARCHAR(150) | Required |
+| quantity | INT UNSIGNED | Required, must be > 0 |
+| purpose | TEXT | Required |
+| status | VARCHAR(20) | Default: pending |
+| created_at | TIMESTAMP | Nullable |
+| updated_at | TIMESTAMP | Nullable |
+
+## Migration Command
+
+php artisan make:migration create_requests_table
+php artisan migrate
+php artisan migrate:status
+
+## Steps to Verify the Table
+
+1. Open phpMyAdmin at http://localhost/phpmyadmin
+2. Select laravel_request_system_db
+3. Click the requests table
+4. Click Structure to verify columns and types
+5. Click Browse to view sample rows
+
+## User Stories
+
+### Requester
+As a requester, I want to submit a request for an item or service so that my needs are formally recorded and can be reviewed.
+
+### Staff Reviewer
+As a staff reviewer, I want to view and update the status of submitted requests so that I can approve or reject them efficiently.
+
+### Record Keeper
+As a record keeper, I want to browse and track all requests and their statuses so that I can maintain accurate records.
