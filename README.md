@@ -148,3 +148,22 @@ As a staff reviewer, I want to view and update the status of submitted requests 
 
 ### Record Keeper
 As a record keeper, I want to browse and track all requests and their statuses so that I can maintain accurate records.
+A simple Laravel-based request management system built as part of DevOps Laboratory 1. The project demonstrates Laravel setup, MySQL database integration, Git version control, and a basic DevOps workflow.
+
+## Student Information
+- **Complete Name:** [Arado, Jerome]
+- **Course:** [BSIT 4-3]
+
+## Software Requirements
+- PHP >= 8.1
+- Composer
+- MySQL (via XAMPP)
+- phpMyAdmin
+- Node.js and npm
+- Git
+
+## Laravel Installation Instructions
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/jerome-arado/laravel-request-system.git
+   cd laravel-request-system
