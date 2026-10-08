@@ -16,7 +16,7 @@ A Laravel-based web application developed for DevOps Laboratory 1 that demonstra
 
 - PHP 8.1 or higher
 - Composer
-- MySQL (via XAMPP)
+- MySQL (via XAMPP or Laragon)
 - phpMyAdmin
 - Node.js and npm
 - Git
@@ -27,32 +27,24 @@ A Laravel-based web application developed for DevOps Laboratory 1 that demonstra
 ## Laravel Installation Instructions
 
 1. Install Composer and make sure PHP is available in your system PATH.
-2. Open a terminal and navigate to your web server directory (e.g., `C:\xampp\htdocs`).
+2. Open a terminal and navigate to your web server directory (e.g., `C:\laragon\www`).
 3. Create a new Laravel project using Composer:
-
-   ```bash
+   ```
    composer create-project laravel/laravel laravel-request-system
    ```
-
 4. Navigate into the project folder:
-
-   ```bash
+   ```
    cd laravel-request-system
    ```
-
 5. Copy the environment file:
-
-   ```bash
+   ```
    cp .env.example .env
    ```
-
 6. Generate the application key:
-
-   ```bash
+   ```
    php artisan key:generate
    ```
-
-7. Configure your database credentials inside the `.env` file (see **Database Import Instructions** below).
+7. Configure your database credentials inside the `.env` file.
 
 ---
 
@@ -66,11 +58,10 @@ laravel_request_system_db
 
 ## Database Import Instructions
 
-1. Start XAMPP and open phpMyAdmin at `http://localhost/phpmyadmin`.
+1. Start XAMPP or Laragon and open phpMyAdmin at `http://localhost/phpmyadmin`.
 2. Create a new database named `laravel_request_system_db`.
 3. Set the database connection in the `.env` file:
-
-   ```env
+   ```
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
    DB_PORT=3306
@@ -78,10 +69,8 @@ laravel_request_system_db
    DB_USERNAME=your_local_username
    DB_PASSWORD=your_local_password
    ```
-
 4. Run the migrations to create the required tables:
-
-   ```bash
+   ```
    php artisan migrate
    ```
 
@@ -89,7 +78,7 @@ laravel_request_system_db
 
 ## Commands Needed to Run the Project
 
-```bash
+```
 composer install
 npm install
 cp .env.example .env
@@ -110,6 +99,8 @@ http://127.0.0.1:8000
 
 https://github.com/jerome-arado/laravel-request-system
 
+---
+
 ## Request Table Fields
 
 | Field | Type | Constraint |
@@ -124,11 +115,17 @@ https://github.com/jerome-arado/laravel-request-system
 | created_at | TIMESTAMP | Nullable |
 | updated_at | TIMESTAMP | Nullable |
 
+---
+
 ## Migration Command
 
+```
 php artisan make:migration create_requests_table
 php artisan migrate
 php artisan migrate:status
+```
+
+---
 
 ## Steps to Verify the Table
 
@@ -137,6 +134,8 @@ php artisan migrate:status
 3. Click the requests table
 4. Click Structure to verify columns and types
 5. Click Browse to view sample rows
+
+---
 
 ## User Stories
 
@@ -148,28 +147,10 @@ As a staff reviewer, I want to view and update the status of submitted requests 
 
 ### Record Keeper
 As a record keeper, I want to browse and track all requests and their statuses so that I can maintain accurate records.
-A simple Laravel-based request management system built as part of DevOps Laboratory 1. The project demonstrates Laravel setup, MySQL database integration, Git version control, and a basic DevOps workflow.
 
-## Student Information
-- **Complete Name:** [Arado, Jerome]
-- **Course:** [BSIT 4-3]
+---
 
-## Software Requirements
-- PHP >= 8.1
-- Composer
-- MySQL (via XAMPP)
-- phpMyAdmin
-- Node.js and npm
-- Git
-
-## Laravel Installation Instructions
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/jerome-arado/laravel-request-system.git
-   cd laravel-request-system
-
-
-   ## Laboratory 3 File Responsibilities
+## Laboratory 3 File Responsibilities
 
 | File | Maintainer |
 |---|---|
@@ -187,3 +168,9 @@ A simple Laravel-based request management system built as part of DevOps Laborat
 **Tests maintainer:** Reviewer
 
 **Denial response policy:** This project returns **404 (Not Found)** for another student's record to avoid disclosing that the record exists.
+
+---
+
+## Laboratory 3 Verification
+
+Verification instruction: Follow the required access checks.
