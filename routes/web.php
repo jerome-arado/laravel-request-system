@@ -4,7 +4,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceRequestController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome');
+Route::get('/', function () {
+    return auth()->check()
+        ? redirect()->route('dashboard')
+        : redirect()->route('login');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
