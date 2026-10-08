@@ -173,4 +173,4 @@ As a record keeper, I want to browse and track all requests and their statuses s
 
 ## Laboratory 3 Verification
 
-Verification instruction: Follow the required access checks.
+Verification instruction: Test Administrator Access and Administrator-only status updates.
