@@ -167,3 +167,23 @@ A simple Laravel-based request management system built as part of DevOps Laborat
    ```bash
    git clone https://github.com/jerome-arado/laravel-request-system.git
    cd laravel-request-system
+
+
+   ## Laboratory 3 File Responsibilities
+
+| File | Maintainer |
+|---|---|
+| app/Policies/ServiceRequestPolicy.php | Driver |
+| app/Http/Controllers/ServiceRequestController.php | Driver |
+| routes/web.php | Driver |
+| resources/views/requests/* | Driver |
+| tests/Feature/ServiceRequestTest.php | Reviewer |
+| README.md | Driver + Reviewer |
+
+**Policy maintainer:** Driver
+**Controller maintainer:** Driver
+**Routes maintainer:** Driver
+**Views maintainer:** Driver
+**Tests maintainer:** Reviewer
+
+**Denial response policy:** This project returns **404 (Not Found)** for another student's record to avoid disclosing that the record exists.
