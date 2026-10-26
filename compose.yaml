@@ -1,0 +1,51 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
+    networks:
+      - laravel-net
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: php-app
+    volumes:
+      - ./storage:/var/www/html/storage
+    env_file:
+      - .env.container
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - laravel-net
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: laravel_request_container_db
+      MYSQL_USER: laravel_user
+      MYSQL_PASSWORD: laravel_password
+      MYSQL_ROOT_PASSWORD: root_password
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_password"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - laravel-net
+
+volumes:
+  db_data:
+
+networks:
+  laravel-net:
+    driver: bridge
