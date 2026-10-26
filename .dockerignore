@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.container.example
+.git
+.idea
+.vscode
+node_modules
+vendor
+storage/logs/*
+*.sql
+*.zip
+*.tar.gz
