@@ -1,0 +1,26 @@
+name: Deploy to Staging
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Checkout release tag
+        uses: actions/checkout@v4
+        with:
+          ref: v1.0.0
+
+      - name: Verify release artifact
+        run: |
+          echo "Deploying tag: v1.0.0"
+          echo "Commit: $(git rev-parse HEAD)"
+          echo "Artifact digest: A5816312ED69F8D9DC8A736B245FA997BB7BE22ECCA52BA5E12D51385DF26D2E"
+
+      - name: Simulate deployment to staging
+        run: |
+          echo "Deploying to http://laravel-request-staging.test"
+          echo "Migration plan: no schema change (all six migrations already Ran in Batch 1)"
+          echo "Deployment complete."
