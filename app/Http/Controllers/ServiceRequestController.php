@@ -34,6 +34,7 @@ class ServiceRequestController extends Controller
      */
     public function create(Request $request)
     {
+        abort(503, 'Request submission temporarily unavailable.');
         Gate::authorize('create', ServiceRequest::class);
 
         return view('requests.create');
