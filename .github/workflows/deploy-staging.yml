@@ -2,25 +2,42 @@ name: Deploy to Staging
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release tag to deploy (e.g. v1.0.0 or v1.4.1-lab-fault)'
+        required: true
+        default: 'v1.0.0'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: staging
     steps:
+      - name: Validate input
+        run: |
+          echo "Requested version: ${{ inputs.version }}"
+          case "${{ inputs.version }}" in
+            v1.0.0|v1.4.1-lab-fault)
+              echo "Version is in the allowed set."
+              ;;
+            *)
+              echo "ERROR: version must be v1.0.0 or v1.4.1-lab-fault"
+              exit 1
+              ;;
+          esac
+
       - name: Checkout release tag
         uses: actions/checkout@v4
         with:
-          ref: v1.0.0
+          ref: ${{ inputs.version }}
 
       - name: Verify release artifact
         run: |
-          echo "Deploying tag: v1.0.0"
+          echo "Deploying tag: ${{ inputs.version }}"
           echo "Commit: $(git rev-parse HEAD)"
-          echo "Artifact digest: A5816312ED69F8D9DC8A736B245FA997BB7BE22ECCA52BA5E12D51385DF26D2E"
 
       - name: Simulate deployment to staging
         run: |
-          echo "Deploying to http://laravel-request-staging.test"
+          echo "Deploying ${{ inputs.version }} to http://laravel-request-staging.test"
           echo "Migration plan: no schema change (all six migrations already Ran in Batch 1)"
           echo "Deployment complete."
