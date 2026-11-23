@@ -175,3 +175,69 @@ As a record keeper, I want to browse and track all requests and their statuses s
 
 Verification instruction: Test student ownership and deny access to another student's request.
 Verification instruction: Test Administrator Access and Administrator-Only Status Updates.
+
+
+---
+
+## Release Process (Lab 8)
+
+### Environments
+| Environment | Purpose | Notes |
+|---|---|---|
+| Development | Local editing and debugging | Laragon, `APP_DEBUG=true` |
+| Test | Automated CI on every push | GitHub Actions `ci.yml` |
+| Staging | Production-like verification | `http://laravel-request-staging.test`, `APP_DEBUG=false`, required reviewer on the `staging` environment |
+| Production | Real users | Not used in this lab |
+
+### Release Checklist
+Every release requires all of the following before promotion:
+
+- Versioned tag and commit SHA
+- Artifact digest (SHA256)
+- CI green on the exact commit being deployed
+- Migration plan stating whether a schema change is required
+- Named approver from the `staging` environment's required-reviewer list
+- Defined smoke tests (see below)
+- A concrete rollback trigger (for example, the request-creation smoke test fails)
+
+### Deploying a Release
+
+1. Dispatch `.github/workflows/deploy-staging.yml` **from `main`**, with the `version` input set to the release tag. Do not dispatch at the tag itself — tags cut before the `workflow_dispatch` trigger was added will fail with "workflow does not exist".
+2. The job pauses on the `staging` environment. The designated reviewer verifies:
+   - CI status on the exact commit
+   - The `Commit:` line in the **Verify release artifact** step matches the release tag
+   - The migration plan
+3. Reviewer approves; the run completes.
+4. The supplied workflow's deployment step is a **simulation** (it echoes the target but does not copy files). The approved artifact is therefore promoted to the staging target manually, using the exact commit recorded in the run's Verify step. Approval, artifact identity, and post-promotion live revision are verified separately for each release.
+5. Run the smoke tests.
+
+### Smoke Tests
+| # | Test | Expected |
+|---|---|---|
+| 1 | Health and revision | `GET /up` returns 200 and the running revision matches the release record |
+| 2 | Student login | Test student signs in and reaches `/requests` |
+| 3 | Request creation | Student creates an HDMI adapter request labelled `STAGE-LIB-08` and reopens the saved record |
+| 4 | Administrator status update | Test administrator changes the request to an allowed status |
+| 5 | Student restriction | The student account cannot perform the administrative status change (403) |
+
+### Recovery Result — Lab 8
+
+- **Faulty release:** `v1.4.1-lab-fault` — commit `f7ff986cdba34965d1a3258ace5ab2c0d6e518e5`. The fault introduces `abort(503, 'Request submission temporarily unavailable.')` in `app/Http/Controllers/ServiceRequestController.php`, so the request form is unavailable while the rest of the application stays up.
+- **Failure observed:** Request-creation smoke test returned **503 Service Unavailable** at `/requests/create` for an authenticated student. This met the documented rollback trigger.
+- **Restored release:** `v1.0.0` — commit `856a86e4915e5ca7aa211f9eede9ea5681e33bd3`.
+- **Outcome:** All five smoke tests passed after rollback. The `STAGE-LIB-08` record (request ID 1) remained present throughout, confirming that an artifact rollback does not affect persisted data.
+- **Database note:** Replacing the application artifact does not roll back the database schema or its records. A genuine database recovery is a separate procedure: restore a verified snapshot to a confirmed recovery point, apply migrations to the schema version required by the target release, and reconcile rows written between the snapshot and the rollback point using application and audit logs. `php artisan migrate:rollback` alone is not an acceptable recovery method because it reverses schema changes without restoring lost data.
+
+### Workflow Run References
+| Release | Run |
+|---|---|
+| Known-good `v1.0.0` | https://github.com/jerome-arado/laravel-request-system/actions/runs/45082602955 |
+| Faulty `v1.4.1-lab-fault` | https://github.com/jerome-arado/laravel-request-system/actions/runs/45096838553 |
+| Rollback `v1.0.0` | https://github.com/jerome-arado/laravel-request-system/actions/runs/45115776052 |
+
+### Operational Notes
+- The `staging` environment requires reviewer approval (currently: Hugh Derit).
+- CI status on the exact commit is verified before approval, not assumed from `main`.
+- Manual promotion after approval is expected for this lab because the supplied workflow simulates the deploy step. The promoted commit is always the one recorded in the run's Verify step.
+- Rollback decision for Lab 8 was made at 1:08 on 23 November 2026.
+- Reviewer verification recorded on 1:13.
