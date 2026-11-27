@@ -1,0 +1,11 @@
+# Non-secret configuration baseline for Laravel staging
+# The audit script compares effective settings against these approved values.
+# This file contains no secrets and is safe to commit.
+
+environment_label=staging
+debug_setting=false
+document_root=public/
+writable_paths=storage/, bootstrap/cache/
+service_identity=laragon
+expected_database_access=private, least-privilege runtime account
+exposed_services=80, 443
